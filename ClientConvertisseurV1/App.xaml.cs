@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using ClientConvertisseurV1.Views;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -33,6 +34,13 @@ namespace ClientConvertisseurV1
         public App()
         {
             this.InitializeComponent();
+
+            // Capture des exceptions non gérées
+            UnhandledException += (sender, e) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"ERREUR : {e.Exception}");
+                e.Handled = true; // Pour éviter le crash immédiat
+            };
         }
 
         /// <summary>
@@ -42,6 +50,9 @@ namespace ClientConvertisseurV1
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             m_window = new MainWindow();
+            Frame rootFrame = new Frame();
+            rootFrame.Navigate(typeof(ConvertisseurEuroPage));
+            m_window.Content = rootFrame;
             m_window.Activate();
         }
 
